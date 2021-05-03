@@ -1,9 +1,9 @@
 fun main() {
-    val mainChar = Character(Goblin(), 0, Armor("no", 0), Weapon("your fists", 0))
+    val mainChar = Goblin(0)
     var choice = ""
     println("Intro goes here")
     println("You've escaped the unkillable giant spider, but now you are trapped in an underground tunnel.")
-    println("There are flesh-eating skitterers between you and escape. You will have to fight your way out.")
+    println("There are flesh-eating centipedes called skitterers between you and escape. You will have to fight your way out.")
 
     while(choice!="y" && choice!="n") {
         println("You see a good bashing rock on the tunnel floor.")
@@ -31,27 +31,40 @@ fun main() {
         }
     }
     choice=""
+    val skitterer = Skitterer(0)
 }
 
-fun printInfo(mainChar: Character){
-    println("You are a level ${mainChar.level} ${mainChar.type.type}.")
+fun printInfo(mainChar: Creature){
+    println("You are a level ${mainChar.level} ${mainChar.type}.")
     println("You have ${mainChar.armor.description} armor.")
     println("You are armed with ${mainChar.weapon.description}.")
     println("Your attack is ${mainChar.attack}.")
     println("Your defense is ${mainChar.defense}.")
 }
 
-class Character(val type: Goblin, var level: Int, var armor: Armor, var weapon: Weapon){
+open class Creature(var level: Int){
+    open val type = "any"
+    open var baseAttack = 0
+    open var baseDefense = 0
+    open var armor = Armor("no", 0)
+    open var weapon = Weapon("none", 0)
     var attack= 1
-        get() = type.attack + weapon.attack + level
+        get() = baseAttack + weapon.attack + level
     var defense = 0
-        get() = type.defense + armor.defense + level
+        get() = baseDefense + armor.defense + level
 }
 
-class Goblin(){
-    val type = "goblin"
-    val attack = 1;
-    val defense = 0;
+class Goblin(level: Int) : Creature(level){
+    override val type = "goblin"
+    override var baseAttack = 1
+    override var armor = Armor("no", 0)
+    override var weapon = Weapon("your fists", 0)
+}
+
+class Skitterer(level: Int) : Creature(level){
+    override val type = "skitterer"
+    override var armor = Armor("chitinous exoskeleton", 2)
+    override var weapon = Weapon("bite", 1)
 }
 
 class Weapon(val description: String, val attack: Int){
