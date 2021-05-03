@@ -1,12 +1,12 @@
 fun main() {
-    val mainChar = MainChar()
+    val mainChar = Character(Goblin(), 0, Armor("no", 0), Weapon("your fists", 0))
     var choice = ""
     println("Intro goes here")
     println("You've escaped the unkillable giant spider, but now you are trapped in an underground tunnel.")
     println("There are flesh-eating skitterers between you and escape. You will have to fight your way out.")
 
     while(choice!="y" && choice!="n") {
-        println("You see good bashing rock on the tunnel floor.")
+        println("You see a good bashing rock on the tunnel floor.")
         println("You're unarmed. It looks like the best weapon available right now.")
         println("Pick it up? Type y for yes, n for no")
         choice=readLine().toString()
@@ -33,23 +33,19 @@ fun main() {
     choice=""
 }
 
-fun printInfo(mainChar: MainChar){
+fun printInfo(mainChar: Character){
     println("You are a level ${mainChar.level} ${mainChar.type.type}.")
-    println("You have ${mainChar.armor} armor.")
+    println("You have ${mainChar.armor.description} armor.")
     println("You are armed with ${mainChar.weapon.description}.")
     println("Your attack is ${mainChar.attack}.")
     println("Your defense is ${mainChar.defense}.")
 }
 
-class MainChar(){
-    val type = Goblin()
-    var level = 0
-    var armor = "no"
-    var weapon = Weapon("your fists", 0)
+class Character(val type: Goblin, var level: Int, var armor: Armor, var weapon: Weapon){
     var attack= 1
-        get() = type.attack// + weapon.attack + level.attack
+        get() = type.attack + weapon.attack + level
     var defense = 0
-        get() = type.defense// + armor.defense + level.defense
+        get() = type.defense + armor.defense + level
 }
 
 class Goblin(){
@@ -60,3 +56,5 @@ class Goblin(){
 
 class Weapon(val description: String, val attack: Int){
 }
+
+class Armor(val description: String, val defense: Int){}
